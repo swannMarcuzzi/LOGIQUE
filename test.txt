@@ -1,0 +1,48 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+LIBRARY UNISIM;
+USE UNISIM.Vcomponents.ALL;
+
+ENTITY cadenas_cadenas_sch_tb IS
+END cadenas_cadenas_sch_tb;
+
+ARCHITECTURE behavioral OF cadenas_cadenas_sch_tb IS
+
+   CONSTANT PERIOD : time := 100 ns;
+
+   COMPONENT cadenas
+   PORT( SW0  : IN  STD_LOGIC;
+         SW1  : IN  STD_LOGIC;
+         SW2  : IN  STD_LOGIC;
+         SW3  : IN  STD_LOGIC;
+         LED0 : OUT STD_LOGIC );
+   END COMPONENT;
+
+   SIGNAL SW0, SW1, SW2, SW3 : STD_LOGIC := '0';
+   SIGNAL LED0 : STD_LOGIC;
+
+BEGIN
+
+   UUT: cadenas PORT MAP(
+      SW0  => SW0,
+      SW1  => SW1,
+      SW2  => SW2,
+      SW3  => SW3,
+      LED0 => LED0
+   );
+
+-- *** Test Bench - User Defined Section ***
+   tb : PROCESS
+      variable v : std_logic_vector(3 downto 0);
+   BEGIN
+      for i in 0 to 15 loop
+         v := std_logic_vector(to_unsigned(i, 4));
+         SW3 <= v(3); SW2 <= v(2); SW1 <= v(1); SW0 <= v(0);
+         wait for PERIOD;
+      end loop;
+      WAIT; -- attend indefiniment
+   END PROCESS;
+-- *** End Test Bench - User Defined Section ***
+
+END;
